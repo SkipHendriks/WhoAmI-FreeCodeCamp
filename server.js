@@ -3,9 +3,11 @@
 
 // init project
 var express = require('express');
-var accepts = require('accepts');
+
 var app = express();
 
+const requestIp = require('request-ip');
+app.use(requestIp.mw())
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
@@ -14,6 +16,7 @@ app.use(cors({optionSuccessStatus: 200}));  // some legacy browsers choke on 204
 
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
+
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (req, res) {
@@ -27,13 +30,10 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get('/api/whoami', function (req, res) {
-    var open_paren = req.headers['user-agent'].indexOf('(');
-    var close_paren = req.headers['user-agent'].indexOf(')');
-    var system = req.headers['user-agent']; //.slice(open_paren + 1, close_paren);
     res.json({
-        ipaddress: req.headers['x-forwarded-for'],
-        language: accepts(req).languages()[0],
-        software: system
+        ipaddress: req., //req.headers['x-forwarded-for'],
+        language: req.headers["accept-language"],
+        software: req.headers['user-agent']
     });
 });
 
