@@ -6,6 +6,7 @@ var express = require('express');
 
 var app = express();
 
+// for parsing ip address (nginx in use here)
 const requestIp = require('request-ip');
 app.use(requestIp.mw())
 
@@ -24,19 +25,13 @@ app.get("/", function (req, res) {
 });
 
 
-// your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
-});
-
 app.get('/api/whoami', function (req, res) {
     res.json({
-        ipaddress: req., //req.headers['x-forwarded-for'],
+        ipaddress: req.clientIp,
         language: req.headers["accept-language"],
         software: req.headers['user-agent']
     });
 });
-
 
 
 // listen for requests :)
